@@ -180,6 +180,17 @@ files = [
 ]
 
 [[package]]
+name = "material"
+version = "0.1"
+description = "UNKNOWN"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "material-0.1.tar.gz", hash = "sha256:99a6a68527b0faff78d9ae85d3838d7eb350922f8b15d536945c515cd8418c42"},
+]
+
+[[package]]
 name = "mergedeep"
 version = "1.3.4"
 description = "A deep merge function for 🐍."
@@ -451,4 +462,4 @@ watchmedo = ["PyYAML (>=3.10)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "60fb776b155948af97d1dfb5b1758d134d8234a913db715ff1d4230b603d4bb6"
+content-hash = "18377996b7ef722d7b12396ebbc4608c10ae9cb3d152310fa0261504ce4d9ba5"
