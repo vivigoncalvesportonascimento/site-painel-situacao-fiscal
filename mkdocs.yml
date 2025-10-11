@@ -1,1 +1,4 @@
-site_name: Painel Situação Fiscal
+site_name: Metadados Fiscais MG: A Documentação do Painel Fiscal
+site_url: https://mydomain.org/mysite
+theme:
+  name: material
