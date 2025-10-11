@@ -1,15 +1,17 @@
 # Informações do Projeto
-site_name: "Metadados Fiscais MG: A Documentação do Painel Fiscal"
-site_url: https://usuario.github.io/fiscaldocs-mg/
-site_author: Seu Nome / Sua Equipe
+site_name: "Metadados Fiscais MG: Documentação do Painel Fiscal"
+site_url: https://mydomain.org/mysite
+#site_url: https://usuario.github.io/fiscaldocs-mg/
+site_author: Viviane Gonçalves Porto Nascimento
 site_description: >
   Documentação completa sobre a metodologia, fontes de dados e processo de
   desenvolvimento do Painel de Transparência Fiscal de Minas Gerais.
 
 # Repositório
-repo_name: usuario/fiscaldocs-mg
-repo_url: https://github.com/usuario/fiscaldocs-mg
+repo_name: vivigoncalvesportonascimento/site-painel-situacao-fiscal
+repo_url: https://github.com/vivigoncalvesportonascimento/site-painel-situacao-fiscal
 edit_uri: edit/main/docs/
+
 
 # Configuração do Tema Material
 theme:
