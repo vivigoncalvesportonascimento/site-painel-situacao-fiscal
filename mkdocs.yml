@@ -1,4 +1,76 @@
+# Informações do Projeto
 site_name: Metadados Fiscais MG: A Documentação do Painel Fiscal
-site_url: https://mydomain.org/mysite
+site_url: https://usuario.github.io/fiscaldocs-mg/
+site_author: Seu Nome / Sua Equipe
+site_description: >
+  Documentação completa sobre a metodologia, fontes de dados e processo de
+  desenvolvimento do Painel de Transparência Fiscal de Minas Gerais.
+
+# Repositório
+repo_name: usuario/fiscaldocs-mg
+repo_url: https://github.com/usuario/fiscaldocs-mg
+edit_uri: edit/main/docs/
+
+# Configuração do Tema Material
 theme:
   name: material
+  language: pt
+  logo: assets/logo.svg
+  favicon: assets/favicon.png
+  palette:
+    # Paleta para modo claro
+    - scheme: default
+      primary: blue grey
+      accent: blue
+      toggle:
+        icon: material/weather-sunny
+        name: Mudar para modo escuro
+    # Paleta para modo escuro
+    - scheme: slate
+      primary: blue grey
+      accent: light-blue
+      toggle:
+        icon: material/weather-night
+        name: Mudar para modo claro
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - toc.integrate
+    - navigation.top
+    - search.suggest
+    - content.code.annotate
+    - content.tabs.link
+
+# Estrutura de Navegação (Menus do site)
+nav:
+  - 'Início': 'index.md'
+  - 'O Projeto':
+    - 'Motivação e Objetivos': 'projeto/motivacao.md'
+    - 'Ferramentas Utilizadas': 'projeto/ferramentas.md'
+  - 'Metodologia de Dados':
+    - 'Fontes de Dados': 'dados/fontes_dados.md'
+    - 'Pipeline de ETL': 'dados/pipeline_etl.md'
+    - 'Padrão Frictionless': 'dados/padrao_frictionless.md'
+  - 'O Dashboard':
+    - 'Guia de Uso': 'dashboard/guia_usuario.md'
+    - 'Análise dos Indicadores': 'dashboard/detalhe_indicadores.md'
+  - 'Comunidade':
+    - 'Como Replicar': 'comunidade/como_replicar.md'
+    - 'Como Contribuir': 'comunidade/como_contribuir.md'
+
+# Extensões do Markdown para recursos avançados
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - attr_list
+  - md_in_html
+  - pymdownx.emoji:
+      emoji_index:!!python/name:material.extensions.emoji.twemoji
+      emoji_generator:!!python/name:material.extensions.emoji.to_svg

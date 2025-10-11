@@ -1,6 +1,8 @@
 # Metadados Fiscais MG: A Documentação do Painel Fiscal do Estado de Minas Gerais
 
-Esta site objetiva apresentar o passo a passo para a criação do Painel Fiscal do Estado de Minas Gerais.
+A documentação completa sobre a metodologia, fontes de dados e processo de desenvolvimento do Painel de Transparência Fiscal de Minas Gerais.
+Este site detalha como transformamos dados fiscais complexos em um dashboard interativo e compreensível, por meio de gráficos e visuais que podem ser utiizados para compor apresentações diversas sobre a situação fiscal do Estado.
+
 
 ## Commands
 
