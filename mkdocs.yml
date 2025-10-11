@@ -1,5 +1,5 @@
 # Informações do Projeto
-site_name: Metadados Fiscais MG: A Documentação do Painel Fiscal
+site_name: "Metadados Fiscais MG: A Documentação do Painel Fiscal"
 site_url: https://usuario.github.io/fiscaldocs-mg/
 site_author: Seu Nome / Sua Equipe
 site_description: >
@@ -15,8 +15,8 @@ edit_uri: edit/main/docs/
 theme:
   name: material
   language: pt
-  logo: assets/logo.svg
-  favicon: assets/favicon.png
+  #logo: assets/logo.svg
+  #favicon: assets/favicon.png
   palette:
     # Paleta para modo claro
     - scheme: default
@@ -71,6 +71,3 @@ markdown_extensions:
       alternate_style: true
   - attr_list
   - md_in_html
-  - pymdownx.emoji:
-      emoji_index:!!python/name:material.extensions.emoji.twemoji
-      emoji_generator:!!python/name:material.extensions.emoji.to_svg
