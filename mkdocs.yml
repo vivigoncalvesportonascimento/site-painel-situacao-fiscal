@@ -48,7 +48,7 @@ nav:
   - 'Início': 'index.md'
   - 'O Projeto':
     - 'Motivação e Objetivos': 'projeto/motivacao.md'
-    - 'Ferramentas Utilizadas': 'projeto/ferramentas.md'
+    - 'Ferramentas Utilizadas': 'projeto/arquitetura_tecnica.md'
   - 'Metodologia de Dados':
     - 'Fontes de Dados': 'dados/fontes_dados.md'
     - 'Pipeline de ETL': 'dados/pipeline_etl.md'
