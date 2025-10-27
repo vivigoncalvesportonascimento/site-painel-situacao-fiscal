@@ -42,6 +42,7 @@ theme:
     - search.suggest
     - content.code.annotate
     - content.tabs.link
+    - content.code.copy
 
 # Estrutura de Navegação (Menus do site)
 nav:
@@ -54,6 +55,7 @@ nav:
     - 'Pipeline de ETL': 'dados/pipeline_etl.md'
     - 'Padrão Frictionless': 'dados/padrao_frictionless.md'
   - 'O Dashboard':
+    - 'Desenvolvendo o Painel': 'dashboard/desenvolvendo_o_painel.md'
     - 'Guia de Uso': 'dashboard/guia_usuario.md'
     - 'Análise dos Indicadores': 'dashboard/detalhe_indicadores.md'
   - 'Comunidade':
@@ -64,6 +66,8 @@ nav:
 markdown_extensions:
   - pymdownx.highlight:
       anchor_linenums: true
+      # pygments_style: github      <-- REMOVIDO
+      # pygments_style_dark: dracula  <-- REMOVIDO
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
