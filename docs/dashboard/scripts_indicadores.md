@@ -7,10 +7,6 @@ Esta seção detalha os scripts localizados na pasta dashboard/pages/. Cada arqu
 
 Este script constrói a página do indicador de resultado fiscal, consumindo os serviços de data_loader e utils para criar uma visualização interativa e uma tabela detalhada.
 
-![Resultado Fiscal Gráfico](assets/resultado_fiscal_grafico.png)
-![Resultado Fiscal Tabela](assets/resultado_fiscal_tabela.png)
-
-
 ```python
 
 # dashboard/pages/1_Resultado_Fiscal.py
@@ -142,8 +138,6 @@ with st.expander("Ver dados detalhados"):
 
 Este script segue um padrão semelhante ao da página fiscal, mas adaptado para um gráfico de barras e dados previdenciários.
 
-
-![Resultado Previdenciário Gráfico](assets/resultado_previdenciario_grafico.png)
 
 ```python
 
