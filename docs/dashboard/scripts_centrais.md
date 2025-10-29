@@ -6,7 +6,6 @@ Esta seção aborda os scripts que são a espinha dorsal do projeto. Eles lidam 
 
 Este script é o ponto de entrada da aplicação, responsável pela configuração global e pela apresentação da página de boas-vindas.
 
-![Pagina Inicial](assets/pagina_inicial.png)
 
 
 ```python

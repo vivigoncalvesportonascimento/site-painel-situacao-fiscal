@@ -145,8 +145,6 @@ Este script segue um padrão semelhante ao da página fiscal, mas adaptado para 
 
 ![Resultado Previdenciário Gráfico](assets/resultado_previdenciario_grafico.png)
 
-![Resultado Previdenciário Tabela](assets/resultado_previdenciario_tabela.png)
-
 ```python
 
 # dashboard/pages/2_Resultado_Previdenciario.py
