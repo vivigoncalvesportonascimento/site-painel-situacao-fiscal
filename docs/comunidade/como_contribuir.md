@@ -1,3 +1,3 @@
-# ** Como contribuir com o Painel**
+# **Como contribuir com o Painel**
 
 > Em construção

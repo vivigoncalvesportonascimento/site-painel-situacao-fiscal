@@ -52,8 +52,8 @@ nav:
     - 'Ferramentas Utilizadas': 'projeto/ferramentas.md'
   - 'Metodologia de Dados':
     - 'Fontes de Dados': 'dados/fontes_dados.md'
-    - 'Pipeline de ETL': 'dados/pipeline_etl.md'
-    - 'Padrão Frictionless': 'dados/padrao_frictionless.md'
+    - 'Pipeline e ETL': 'dados/pipeline_etl.md'
+    - 'Frictionless e Datapackage': 'dados/padrao_frictionless.md'
   - 'O Dashboard':
     - 'Desenvolvendo o Painel': 'dashboard/desenvolvendo_painel.md'
     - 'Scripts Centrais': 'dashboard/scripts_centrais.md'

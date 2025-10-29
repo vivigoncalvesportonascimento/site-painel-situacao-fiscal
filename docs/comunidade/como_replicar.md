@@ -1,3 +1,3 @@
-# ** Como replicar o painel**
+# **Como replicar o painel**
 
 > Em construção
