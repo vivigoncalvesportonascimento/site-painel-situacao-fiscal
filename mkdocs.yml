@@ -56,9 +56,9 @@ nav:
     - 'Padrão Frictionless': 'dados/padrao_frictionless.md'
   - 'O Dashboard':
     - 'Desenvolvendo o Painel': 'dashboard/desenvolvendo_painel.md'
-    - 'Scripts Centrais do Painel': 'dashboard/scripts_centrais.md'
-    - 'Guia de Uso': 'dashboard/guia_usuario.md'
-    - 'Análise dos Indicadores': 'dashboard/detalhe_indicadores.md'
+    - 'Scripts Centrais': 'dashboard/scripts_centrais.md'
+    - 'Scripts dos Indicadores': 'dashboard/scripts_indicadores.md'
+    - 'Guia de Uso': 'dashboard/guia_usuario.md'    
   - 'Comunidade':
     - 'Como Replicar': 'comunidade/como_replicar.md'
     - 'Como Contribuir': 'comunidade/como_contribuir.md'
