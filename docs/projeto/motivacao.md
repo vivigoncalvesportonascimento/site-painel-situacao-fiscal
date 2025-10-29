@@ -1,4 +1,4 @@
-# **Motivações e Objetivos do Painel**
+# **Objetivos e motivações para o Painel Fiscal**
 
 A criação do Painel Fiscal representa uma evolução estratégica na forma como os dados fiscais do Estado são analisados, apresentados e consumidos. A principal motivação para este projeto é a transição de um processo manual e fragmentado para uma solução centralizada, automatizada e confiável, que busca organizar, padronizar e facilitar o acesso aos principais indicadores da situação fiscal.
 

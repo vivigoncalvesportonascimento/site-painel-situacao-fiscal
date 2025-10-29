@@ -139,9 +139,9 @@ with st.expander("Ver dados detalhados"):
 
 Este script segue um padrão semelhante ao da página fiscal, mas adaptado para um gráfico de barras e dados previdenciários.
 
-![Gráfico de Resultado Fiscal](../assets/resultado_previdenciario_grafico.png)
+![Gráfico de Resultado Previdenciário](../assets/resultado_previdenciario_grafico.png)
 
-![Tabela de Resultado Fiscal](../assets/resultado_previdenciario_tabela.png)
+![Tabela de Resultado Previdenciário](../assets/resultado_previdenciario_tabela.png)
 
 ```python
 

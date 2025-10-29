@@ -46,10 +46,10 @@ theme:
 
 # Estrutura de Navegação (Menus do site)
 nav:
-  - 'Início': 'index.md'
+  - 'Página Inicial': 'index.md'
   - 'O Projeto':
     - 'Motivação e Objetivos': 'projeto/motivacao.md'
-    - 'Ferramentas Utilizadas': 'projeto/arquitetura_tecnica.md'
+    - 'Ferramentas Utilizadas': 'projeto/ferramentas.md'
   - 'Metodologia de Dados':
     - 'Fontes de Dados': 'dados/fontes_dados.md'
     - 'Pipeline de ETL': 'dados/pipeline_etl.md'
@@ -58,7 +58,7 @@ nav:
     - 'Desenvolvendo o Painel': 'dashboard/desenvolvendo_painel.md'
     - 'Scripts Centrais': 'dashboard/scripts_centrais.md'
     - 'Scripts dos Indicadores': 'dashboard/scripts_indicadores.md'
-    - 'Guia de Uso': 'dashboard/guia_usuario.md'    
+    #- 'Guia de Uso': 'dashboard/guia_usuario.md'    
   - 'Comunidade':
     - 'Como Replicar': 'comunidade/como_replicar.md'
     - 'Como Contribuir': 'comunidade/como_contribuir.md'
