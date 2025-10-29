@@ -56,7 +56,7 @@ nav:
     - 'Padrão Frictionless': 'dados/padrao_frictionless.md'
   - 'O Dashboard':
     - 'Desenvolvendo o Painel': 'dashboard/desenvolvendo_painel.md'
-    - 'Pagina Inicial': 'dashboard/pagina_inicial.md'
+    - 'Scripts Centrais do Painel': 'dashboard/scripts_centrais.md'
     - 'Guia de Uso': 'dashboard/guia_usuario.md'
     - 'Análise dos Indicadores': 'dashboard/detalhe_indicadores.md'
   - 'Comunidade':
