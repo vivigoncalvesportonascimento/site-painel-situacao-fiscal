@@ -55,7 +55,8 @@ nav:
     - 'Pipeline de ETL': 'dados/pipeline_etl.md'
     - 'Padrão Frictionless': 'dados/padrao_frictionless.md'
   - 'O Dashboard':
-    - 'Desenvolvendo o Painel': 'dashboard/desenvolvendo_o_painel.md'
+    - 'Desenvolvendo o Painel': 'dashboard/desenvolvendo_painel.md'
+    - 'Pagina Inicial': 'dashboard/pagina_inicial.md'
     - 'Guia de Uso': 'dashboard/guia_usuario.md'
     - 'Análise dos Indicadores': 'dashboard/detalhe_indicadores.md'
   - 'Comunidade':
