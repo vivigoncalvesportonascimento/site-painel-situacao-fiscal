@@ -4,8 +4,11 @@ Esta seção detalha os scripts localizados na pasta dashboard/pages/. Cada arqu
 
 ## **1. Resultado Fiscal (dashboard/pages/resultado_fiscal.py)**
 
-
 Este script constrói a página do indicador de resultado fiscal, consumindo os serviços de data_loader e utils para criar uma visualização interativa e uma tabela detalhada.
+
+![Gráfico de Resultado Fiscal](../assets/resultado_fiscal_grafico.png)
+
+![Tabela de Resultado Fiscal](../assets/resultado_fiscal_tabela.png)
 
 ```python
 
@@ -132,12 +135,13 @@ with st.expander("Ver dados detalhados"):
        -  text_labels: O texto formatado do valor, posicionado sobre o fundo. Esta abordagem cria uma visualização rica em informações e esteticamente agradável.
     - Tabela Estilizada: O uso de `st.expander` permite ocultar a tabela detalhada por defeito, mantendo a interface limpa. O encadeamento .`style.map(...).format(...)` demonstra o poder do Styler do Pandas: `.map()` aplica a função de estilo condicional (`style_resultado_fiscal`) para colorir o texto, enquanto `.format()` aplica a função de formatação de moeda (`formatar_brl`) para exibir os números de forma legível.
 
-
 ## **2. Resultado Previdenciário (dashboard/pages/resultado_previdenciario.py)**
-
 
 Este script segue um padrão semelhante ao da página fiscal, mas adaptado para um gráfico de barras e dados previdenciários.
 
+![Gráfico de Resultado Fiscal](../assets/resultado_previdenciario_grafico.png)
+
+![Tabela de Resultado Fiscal](../assets/resultado_previdenciario_tabela.png)
 
 ```python
 
