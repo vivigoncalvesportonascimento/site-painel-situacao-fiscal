@@ -5,129 +5,244 @@ Esta seção detalha os scripts localizados na pasta dashboard/pages/. Cada arqu
 ## **1. Resultado Fiscal (dashboard/pages/resultado_fiscal.py)**
 
 
-Este script constrói a página que exibe os indicadores de resultado fiscal, como o resultado primário e a dívida pública. Ele demonstra como uma página de indicador consome os serviços dos módulos load e utils para apresentar suas análises.
+Este script constrói a página do indicador de resultado fiscal, consumindo os serviços de data_loader e utils para criar uma visualização interativa e uma tabela detalhada.
 
-Código-Fonte e Explicação Detalhada
+
 
 ```python
 
-# dashboard/pages/resultado_fiscal.py
-
+# dashboard/pages/1_Resultado_Fiscal.py
 import streamlit as st
 import pandas as pd
 import altair as alt
-from load import load_resultado_primario, load_divida_liquida, load_divida_bruta
-from utils import create_chart
 
-st.set_page_config(page_title="Resultado Fiscal")
-st.title('Análise do Resultado Fiscal')
+# Importa as funções "gerais" que criamos
+from data_loader import carregar_dados_fiscal
+from utils import formatar_brl, style_resultado_fiscal, format_brl_bilhoes
 
-# --- Carregamento e Preparação dos Dados ---
-df_resultado_primario = load_resultado_primario()
-df_divida_liquida = load_divida_liquida()
-df_divida_bruta = load_divida_bruta()
+# --- Título da Página ---
+st.title("Resultado Fiscal")
 
-# Transformação do DataFrame de Resultado Primário para formato longo
-df_resultado_primario_long = df_resultado_primario.melt(
-    id_vars=['data'],
-    value_vars=['resultado_primario', 'resultado_nominal'],
-    var_name='Tipo de Resultado',
-    value_name='Valor (R$ bi)'
-)
+# --- Carregar dados (agora vem do módulo) ---
+df_completo = carregar_dados_fiscal()
 
-# --- Renderização dos Gráficos ---
-st.subheader('Resultado Primário e Nominal')
-st.markdown('O resultado primário representa a diferença entre as receitas e despesas do governo, excluindo os juros da dívida. O resultado nominal inclui os juros.')
+if df_completo is None or df_completo.empty:
+    st.error("Não foi possível carregar os dados. Verifique os logs no console.")
+    st.stop()
 
-chart_primario = create_chart(
-    data=df_resultado_primario_long,
-    x_axis='data:T',
-    y_axis='Valor (R$ bi):Q',
-    x_title='Data',
-    y_title='Valor (Bilhões R$)',
-    chart_title='Resultado Primário e Nominal Acumulado em 12 Meses',
+
+# --- Lógica da Página (Filtros e Gráficos) ---
+try:
+    ano_min = int(df_completo['Ano de Exercício'].min())
+    ano_max = int(df_completo['Ano de Exercício'].max())
+
+    anos_selecionados = st.slider(
+        "Escolha o intervalo de anos para análise:",
+        min_value=ano_min,
+        max_value=ano_max,
+        value=(2014, ano_max),  # Valor padrão
+        step=1,
+        key='slider_fiscal'
+    )
+except Exception as e:
+    st.error(f"Erro ao configurar o filtro de anos: {e}")
+    st.stop()
+
+
+# Filtra os dados pelo período selecionado
+df_plot = df_completo[
+    (df_completo['Ano de Exercício'] >= anos_selecionados) &
+    (df_completo['Ano de Exercício'] <= anos_selecionados[1])
+].copy()
+
+if df_plot.empty:
+    st.warning("Nenhum dado disponível para o período selecionado.")
+    st.stop()
+
+# --- Preparação dos dados para o gráfico ---
+df_plot = df_plot / 1_000_000
+df_plot['label_offset'] = df_plot.apply(
+    lambda x: -15 if x > 0 else 15)
+# Reutiliza a função de formatação do utils.py
+df_plot['label_texto'] = (df_plot /
+                          # Exemplo se quisesse Bilhões
+                          1000).apply(format_brl_bilhoes)
+df_plot['label_texto'] = df_plot.apply(
+    lambda x: f"{x:,.2f}".replace(",", "temp").replace(".", ",").replace("temp", "."))
+
+
+df_plot['cor_fundo'] = df_plot.apply(
+    lambda x: '#001B44' if x > 0 else '#660000')
+df_plot['Métrica'] = 'Resultado Fiscal'
+
+# --- Gráfico ---
+base_chart = alt.Chart(df_plot).encode(
+    x=alt.X('Ano de Exercício:O', axis=alt.Axis(
+        format='d', title='Ano de Exercício')),
     tooltip=
 )
-st.altair_chart(chart_primario, use_container_width=True)
 
-st.subheader('Dívida Líquida do Setor Público')
-chart_divida_liquida = create_chart(
-    data=df_divida_liquida,
-    x_axis='data:T',
-    y_axis='divida_liquida_pib:Q',
-    x_title='Data',
-    y_title='% do PIB',
-    chart_title='Dívida Líquida (% do PIB)',
-    tooltip=
+line_e_points = base_chart.mark_line(color='black', point=True).encode(
+    y=alt.Y('Resultado (Milhões):Q', axis=alt.Axis(
+        title='Resultado (R$ Milhões)'))
 )
-st.altair_chart(chart_divida_liquida, use_container_width=True)
 
-st.subheader('Dívida Bruta do Governo Geral')
-chart_divida_bruta = create_chart(
-    data=df_divida_bruta,
-    x_axis='data:T',
-    y_axis='divida_bruta_pib:Q',
-    x_title='Data',
-    y_title='% do PIB',
-    chart_title='Dívida Bruta (% do PIB)',
-    tooltip=
+label_background = base_chart.mark_rect(
+    height=22, width=60, cornerRadius=6, opacity=0.9
+).encode(
+    y=alt.Y('Resultado (Milhões):Q'),
+    yOffset=alt.Y('label_offset:Q'),
+    color=alt.Color('cor_fundo:N', scale=None)
 )
-st.altair_chart(chart_divida_bruta, use_container_width=True)
+
+text_labels = base_chart.mark_text(
+    align='center', baseline='middle', fontSize=12,
+    color='white', fontWeight='bold'
+).encode(
+    y=alt.Y('Resultado (Milhões):Q'),
+    text=alt.Text('label_texto:N'),
+    yOffset=alt.Y('label_offset:Q')
+)
+
+final_chart = alt.layer(line_e_points, label_background, text_labels).properties(
+    title=f"Resultado Fiscal ({anos_selecionados} - {anos_selecionados[1]})",
+    height=500
+).interactive()
+
+st.altair_chart(final_chart, use_container_width=True)
+
+# --- Tabela detalhada ---
+df_tabela = df_plot].set_index('Ano de Exercício')
+df_tabela = df_tabela.sort_index(ascending=False)
+
+with st.expander("Ver dados detalhados"):
+    st.dataframe(
+        df_tabela.style
+        # Usa a função do utils.py
+       .map(style_resultado_fiscal, subset=)
+       .format(formatar_brl),  # Usa a função do utils.py
+        width='stretch'  # <-- CORRIGIDO
+    )
 
 ```
 
 ??? note "Clique aqui para ver a explicação para cada linha de código"
-    -  `from load import... e from utils import...`: Importa as funções necessárias dos módulos de infraestrutura.
-    -  `st.set_page_config(...)` e `st.title(...)`: Configura o título da aba do navegador e o título principal da página.
-    -  `df_resultado_primario = load_resultado_primario()`: Chama a função do módulo load para carregar os dados. O mesmo padrão é seguido para os outros DataFrames.
-    -  `df_resultado_primario.melt(...)`: Transforma o DataFrame de um formato "largo" para um "longo", que é o ideal para plotagem com Altair, permitindo que 'resultado_primario' e 'resultado_nominal' sejam plotados no mesmo gráfico com uma legenda automática.
-    -  `st.subheader(...)` e `st.markdown(...)`: Adicionam um subtítulo e um texto explicativo antes de cada gráfico.
-    -  `chart_primario = create_chart(...)`: Chama a função utilitária para criar o gráfico, passando o DataFrame e os mapeamentos de eixos.
-    -  `st.altair_chart(chart_primario, use_container_width=True)`: Renderiza o gráfico criado na página. use_container_width=True faz com que o gráfico se ajuste à largura da tela.
+    -  Fluxo da Página: A página segue um fluxo lógico claro: carregar dados, validar os dados, apresentar um filtro (`st.slider`), filtrar o DataFrame com base na seleção do utilizador, preparar os dados para visualização, construir e renderizar um gráfico complexo, e finalmente, apresentar uma tabela detalhada dentro de um `st.expander`.
+    -  Visualização Avançada: O gráfico não é uma simples linha. É uma composição de múltiplas camadas do Altair (`alt.layer`):
+       -  line_e_points: A linha principal com pontos nos marcadores.
+       -  label_background: Retângulos coloridos que servem de fundo para os rótulos de texto. A cor é definida condicionalmente com base no valor ser positivo ou negativo.
+       -  text_labels: O texto formatado do valor, posicionado sobre o fundo. Esta abordagem cria uma visualização rica em informações e esteticamente agradável.
+    - Tabela Estilizada: O uso de `st.expander` permite ocultar a tabela detalhada por defeito, mantendo a interface limpa. O encadeamento .`style.map(...).format(...)` demonstra o poder do Styler do Pandas: `.map()` aplica a função de estilo condicional (`style_resultado_fiscal`) para colorir o texto, enquanto `.format()` aplica a função de formatação de moeda (`formatar_brl`) para exibir os números de forma legível.
 
 
 ## **2. Resultado Previdenciário (dashboard/pages/resultado_previdenciario.py)**
 
 
-Este script constrói a página que exibe os indicadores relacionados à previdência social, seguindo o mesmo padrão de arquitetura.
+Este script segue um padrão semelhante ao da página fiscal, mas adaptado para um gráfico de barras e dados previdenciários.
 
 ```python
 
-# dashboard/pages/resultado_previdenciario.py
-
+# dashboard/pages/2_Resultado_Previdenciario.py
 import streamlit as st
 import pandas as pd
 import altair as alt
-from load import load_resultado_previdenciario
-from utils import create_chart
 
-st.set_page_config(page_title="Resultado Previdenciário")
-st.title('Análise do Resultado Previdenciário')
+# Importa as funções "gerais" que criamos
+from data_loader import carregar_dados_previdenciario
+from utils import format_brl_bilhoes, formatar_brl, style_negativo
 
-# --- Carregamento dos Dados ---
-df_previdencia = load_resultado_previdenciario()
+# --- Título da Página ---
+st.title("Resultado Previdenciário")
 
-# --- Renderização do Gráfico ---
-st.subheader('Déficit Previdenciário (RGPS)')
-st.markdown('Representa a diferença entre a arrecadação líquida e a despesa com benefícios do Regime Geral de Previdência Social (RGPS).')
+# --- Carregar Dados ---
+df_previdenciario = carregar_dados_previdenciario()
 
-chart_previdencia = create_chart(
-    data=df_previdencia,
-    x_axis='data:T',
-    y_axis='deficit_rgps_pib:Q',
-    x_title='Data',
-    y_title='% do PIB',
-    chart_title='Déficit do RGPS Acumulado em 12 Meses (% do PIB)',
+if df_previdenciario.empty:
+    st.error("Não foi possível carregar os dados. Verifique a mensagem de erro acima.")
+    st.stop()
+
+# --- Lógica da Página (Filtros e Gráficos) ---
+try:
+    ano_min = int(df_previdenciario['Ano'].min())
+    ano_max = int(df_previdenciario['Ano'].max())
+except ValueError:
+    st.error("Não foi possível determinar o intervalo de anos. Verifique os dados.")
+    st.stop()
+
+anos_selecionados = st.slider(
+    'Selecione o Período:',
+    min_value=ano_min,
+    max_value=ano_max,
+    value=(ano_min, ano_max),
+    key='slider_previdenciario'
+)
+
+# --- Filtrar Dados ---
+mask = (
+    (df_previdenciario['Ano'] >= anos_selecionados) &
+    (df_previdenciario['Ano'] <= anos_selecionados[1])
+)
+df_plot = df_previdenciario[mask].copy()
+
+if df_plot.empty:
+    st.warning("Nenhum dado disponível para o período selecionado.")
+    st.stop()
+
+# --- Preparação dos dados para o gráfico ---
+df_plot = df_plot['Valor'] / 1_000_000_000
+# Usa a função do utils.py
+df_plot['Label_Valor'] = df_plot.apply(format_brl_bilhoes)
+
+# --- Gráfico ---
+bars = alt.Chart(df_plot).mark_bar().encode(
+    x=alt.X('Ano:O', title='Ano'),
+    y=alt.Y('Valor_Bilhoes:Q', title='Valor (R$ Bilhões)'),
+    color=alt.condition(
+        alt.datum.Valor_Bilhoes > 0,
+        alt.value('#001B44'),
+        alt.value('#FFA07A')
+    ),
     tooltip=
 )
-st.altair_chart(chart_previdencia, use_container_width=True)
+
+text_labels = alt.Chart(df_plot).mark_text(
+    align='center', baseline='top', dy=5
+).encode(
+    x=alt.X('Ano:O'),
+    y=alt.Y('Valor_Bilhoes:Q'),
+    text=alt.Text('Label_Valor:N'),
+    color=alt.value('black')
+)
+
+chart = (bars + text_labels).properties(
+    title=f"Resultado Previdenciário ({anos_selecionados} - {anos_selecionados[1]})",
+    height=500
+).interactive()
+
+st.altair_chart(chart, use_container_width=True)
+
+# --- Tabela detalhada ---
+with st.expander("Ver dados detalhados"):
+    df_tabela = df_plot[['Ano', 'Valor']].copy()
+    df_tabela.rename(
+        columns={'Valor': 'Resultado Previdenciario Total'}, inplace=True)
+    df_tabela = df_tabela.sort_values(by='Ano', ascending=False)
+
+    st.dataframe(
+        df_tabela.style
+        # Usa a função do utils.py
+        # <-- CORRIGIDO
+       .map(style_negativo, subset=)
+       .format({
+            'Resultado Previdenciario Total': formatar_brl  # Usa a função do utils.py
+        }),
+        hide_index=True,
+        width='stretch'  # <-- CORRIGIDO
+    )
 
 ```
 
 ??? note "Clique aqui para ver a explicação para cada linha de código"
-    -  `from load import load_resultado_previdenciario`: Importa a função específica para carregar os dados da previdência.
-    -  `df_previdencia = load_resultado_previdenciario()`: Carrega os dados em um DataFrame.
-    -  `st.subheader(...)` e `st.markdown(...)`: Adicionam o título e a descrição para o gráfico.
-    -  `chart_previdencia = create_chart(...)`: Utiliza a mesma função create_chart do módulo utils para gerar o gráfico.
-    -  `st.altair_chart(...)`: Renderiza o gráfico na página.
-
+    -  Consistência Arquitetural: Este script reforça a validade da arquitetura. Ele segue o mesmo padrão da página fiscal (carregar, filtrar, visualizar, detalhar), demonstrando como o design é facilmente replicável para novos indicadores.
+    -  Gráfico de Barras com Rótulos: O gráfico é construído sobrepondo uma camada de texto (text_labels) a uma camada de barras (bars). O operador + no Altair é um atalho para alt.layer. A cor das barras é definida dinamicamente usando alt.condition, uma forma poderosa de aplicar lógica condicional diretamente na especificação do gráfico.
+    -  Tabela Estilizada (Variação): A tabela detalhada utiliza a função style_negativo para colorir os valores e formatar_brl para formatá-los. A sintaxe .format({...}) permite aplicar diferentes funções de formatação a colunas específicas, oferecendo grande flexibilidade.
